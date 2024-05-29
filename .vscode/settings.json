@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "main.h": "c"
+        "main.h": "c",
+        "adc.h": "c",
+        "can.h": "c",
+        "tim.h": "c",
+        "spi.h": "c",
+        "usart.h": "c",
+        "usb_host.h": "c"
     }
 }

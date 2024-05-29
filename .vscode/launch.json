@@ -6,7 +6,7 @@
         {
             "name": "CMSIS-DAP",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}\\build\\VS_TEST.elf",
+            "executable": "${workspaceRoot}\\build\\SWULJRC.elf",
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32F407IG",
@@ -27,7 +27,7 @@
         {
             "name": "Jlink",
             "cwd": "${workspaceFolder}",
-            "executable": "${workspaceRoot}\\build\\VS_TEST.elf",
+            "executable": "${workspaceRoot}\\build\\SWULJRC.elf",
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32F407IG",
@@ -37,7 +37,7 @@
             "interface": "swd",
             "svdFile": "STM32F407.svd",
             "rtos": "FreeRTOS",
-            "preLaunchTask": "build task",//先运行Build任务,取消注释即可使用
+            "preLaunchTask": "build task", //先运行Build任务,取消注释即可使用
             "liveWatch": {
                 "enabled": true,
                 "samplesPerSecond": 4
@@ -48,7 +48,7 @@
         {
             "name": "stlink",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}\\build\\VS_TEST.elf",
+            "executable": "${workspaceRoot}\\build\\SWULJRC.elf",
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32F407IG",
