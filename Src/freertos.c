@@ -132,38 +132,38 @@ void StartDefaultTask(void const *argument)
   {
     USBH_Process(&hUsbHostFS);
     // printf("Here is the default task!\r\n");
-    if (USBH_HID_GetDeviceType(&hUsbHostFS) == HID_JOYSTICK)
-    {
-      printf("This is a joystick device!\r\n");
-      if (USBH_HID_GetJoyInfo(&hUsbHostFS) != NULL)
-      {
-        printf("Joystick info:\r\n");
-        if (joy_info.L_X != JOY_L_X_INIT || joy_info.L_Y != JOY_L_Y_INIT) // 0X80/0X7F为Byte1 Byte2初始化状态
-        {
-          printf("(L_x, L_y):(0x%.2X, 0x%.2X)\r\n", joy_info.L_X, joy_info.L_Y);
-        }
-        if (joy_info.R_X != JOY_R_X_INIT || joy_info.R_Y != JOY_R_Y_INIT) // 0X80/0X7F为Byte3 Byte4初始化状态
-        {
-          printf("(R_x, R_y):(0x%.2X, 0x%.2X)\r\n", joy_info.R_X, joy_info.R_Y);
-        }
-        if (joy_info.Buttons_1 != BUTTONS1_L_INIT) // 0X08 为Byte5初始化状态
-        {
-          printf("Buttons_1: 0x%.2X\r\n", joy_info.Buttons_1);
-        }
-        if (joy_info.Buttons_2 != BUTTONS1_R_INIT) // 0X00 为Byte6初始化状态
-        {
-          printf("Buttons_2: 0x%.2X\r\n", joy_info.Buttons_2);
-        }
-        if (joy_info.ID != 0x08 || joy_info.Mode != 0x00) // 0x7C为mode亮灯；0x74为mode灭灯
-        {
-          printf("ID:0x%X, Mode:0x%X)\r\n", joy_info.ID, joy_info.Mode);
-        }
-      }
-    }
-    else
-    {
-      // printf("Failed to get joystick info!\r\n");
-    }
+    // if (USBH_HID_GetDeviceType(&hUsbHostFS) == HID_JOYSTICK)
+    // {
+    //   printf("This is a joystick device!\r\n");
+    //   if (USBH_HID_GetJoyInfo(&hUsbHostFS) != NULL)
+    //   {
+    //     printf("Joystick info:\r\n");
+    //     if (joy_info.L_X != JOY_L_X_INIT || joy_info.L_Y != JOY_L_Y_INIT) // 0X80/0X7F?Byte1 Byte2?????
+    //     {
+    //       printf("(L_x, L_y):(0x%.2X, 0x%.2X)\r\n", joy_info.L_X, joy_info.L_Y);
+    //     }
+    //     if (joy_info.R_X != JOY_R_X_INIT || joy_info.R_Y != JOY_R_Y_INIT) // 0X80/0X7F?Byte3 Byte4?????
+    //     {
+    //       printf("(R_x, R_y):(0x%.2X, 0x%.2X)\r\n", joy_info.R_X, joy_info.R_Y);
+    //     }
+    //     if (joy_info.Buttons_1 != BUTTONS1_L_INIT) // 0X08 ?Byte5?????
+    //     {
+    //       printf("Buttons_1: 0x%.2X\r\n", joy_info.Buttons_1);
+    //     }
+    //     if (joy_info.Buttons_2 != BUTTONS1_R_INIT) // 0X00 ?Byte6?????
+    //     {
+    //       printf("Buttons_2: 0x%.2X\r\n", joy_info.Buttons_2);
+    //     }
+    //     if (joy_info.ID != 0x08 || joy_info.Mode != 0x00) // 0x7C?mode???0x74?mode??
+    //     {
+    //       printf("ID:0x%X, Mode:0x%X)\r\n", joy_info.ID, joy_info.Mode);
+    //     }
+    //   }
+    // }
+    // else
+    // {
+    //   // printf("Failed to get joystick info!\r\n");
+    // }
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */

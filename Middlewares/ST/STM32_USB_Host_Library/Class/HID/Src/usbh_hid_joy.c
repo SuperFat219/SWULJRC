@@ -8,12 +8,15 @@
 
 #include "usbh_hid_joy.h"
 #include "usbh_hid_parser.h"
+#include "usb_host.h"
 
 static USBH_StatusTypeDef USBH_HID_JoyDecode(USBH_HandleTypeDef *phost);
 
 HID_JOY_Info_TypeDef joy_info;
 uint32_t joy_report_data[2];
 uint32_t joy_rx_report_buf[2];
+extern USBH_HandleTypeDef hUsbHostFS;
+extern ApplicationTypeDef Appli_state;
 
 /* Structures defining how to access items in a HID mouse report */
 /* Access ID state. */
@@ -233,4 +236,12 @@ static USBH_StatusTypeDef USBH_HID_JoyDecode(USBH_HandleTypeDef *phost)
         return USBH_OK;
     }
     return USBH_FAIL;
+}
+
+void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
+{
+    if (Appli_state == APPLICATION_READY)
+    {
+        USBH_HID_GetJoyInfo(&hUsbHostFS);
+    }
 }
