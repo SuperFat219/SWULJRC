@@ -106,8 +106,22 @@ Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid.c \
 Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_keybd.c \
 Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_mouse.c \
 Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_parser.c \
+Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_joy.c \
+Middlewares/Third_Party/SEGGER/RTT/SEGGER_RTT_printf.c \
+Middlewares/Third_Party/SEGGER/RTT/SEGGER_RTT.c \
 Src/sysmem.c \
-Src/syscalls.c  
+Src/syscalls.c  \
+bsp/dwt/bsp_dwt.c \
+bsp/pwm/bsp_pwm.c \
+bsp/gpio/bsp_gpio.c \
+bsp/spi/bsp_spi.c \
+bsp/iic/bsp_iic.c \
+bsp/can/bsp_can.c \
+bsp/usart/bsp_usart.c \
+bsp/log/bsp_log.c \
+bsp/flash/bsp_flash.c \
+bsp/bsp_tools.c
+
 
 # ASM sources
 ASM_SOURCES =  \
@@ -178,7 +192,21 @@ C_INCLUDES =  \
 -IMiddlewares/ST/STM32_USB_Host_Library/Class/HID/Inc \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
--IMiddlewares/ST/ARM/DSP/Inc
+-IMiddlewares/ST/ARM/DSP/Inc \
+-IMiddlewares/ST/ARM/DSP/Include/dsp \
+-IMiddlewares/ST/ARM/DSP/Include \
+-IMiddlewares/Third_Party/SEGGER/RTT \
+-IMiddlewares/Third_Party/SEGGER/Config \
+-Ibsp/dwt \
+-Ibsp/can \
+-Ibsp/usart \
+-Ibsp/gpio \
+-Ibsp/spi \
+-Ibsp/iic \
+-Ibsp/log \
+-Ibsp/flash \
+-Ibsp/pwm \
+-Ibsp
 
 
 # compile gcc flags

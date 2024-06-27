@@ -6,6 +6,11 @@
         "tim.h": "c",
         "spi.h": "c",
         "usart.h": "c",
-        "usb_host.h": "c"
+        "usb_host.h": "c",
+        "bsp_dwt.h": "c",
+        "bsp_log.h": "c",
+        "segger_rtt.h": "c",
+        "usbh_core.h": "c",
+        "usbh_hid.h": "c"
     }
 }

@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * File Name          : freertos.c
-  * Description        : Code for freertos applications
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * File Name          : freertos.c
+ * Description        : Code for freertos applications
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2024 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "usbh_hid.h"
+#include "usbh_core.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +46,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+extern HID_JOY_Info_TypeDef joy_info;
+extern USBH_HandleTypeDef hUsbHostFS;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -54,19 +56,19 @@ osThreadId defaultTaskHandle;
 
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
+void StartDefaultTask(void const *argument);
 
 extern void MX_USB_HOST_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
-void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
+void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize);
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
 static StackType_t xIdleStack[configMINIMAL_STACK_SIZE];
 
-void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize )
+void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
 {
   *ppxIdleTaskTCBBuffer = &xIdleTaskTCBBuffer;
   *ppxIdleTaskStackBuffer = &xIdleStack[0];
@@ -76,11 +78,12 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
 /* USER CODE END GET_IDLE_TASK_MEMORY */
 
 /**
-  * @brief  FreeRTOS initialization
-  * @param  None
-  * @retval None
-  */
-void MX_FREERTOS_Init(void) {
+ * @brief  FreeRTOS initialization
+ * @param  None
+ * @retval None
+ */
+void MX_FREERTOS_Init(void)
+{
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
@@ -109,24 +112,58 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
-
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
+ * @brief  Function implementing the defaultTask thread.
+ * @param  argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+void StartDefaultTask(void const *argument)
 {
   /* init code for USB_HOST */
   MX_USB_HOST_Init();
   /* USER CODE BEGIN StartDefaultTask */
+
   /* Infinite loop */
-  for(;;)
+  for (;;)
   {
+    USBH_Process(&hUsbHostFS);
+    // printf("Here is the default task!\r\n");
+    if (USBH_HID_GetDeviceType(&hUsbHostFS) == HID_JOYSTICK)
+    {
+      printf("This is a joystick device!\r\n");
+      if (USBH_HID_GetJoyInfo(&hUsbHostFS) != NULL)
+      {
+        printf("Joystick info:\r\n");
+        if (joy_info.L_X != JOY_L_X_INIT || joy_info.L_Y != JOY_L_Y_INIT) // 0X80/0X7F为Byte1 Byte2初始化状态
+        {
+          printf("(L_x, L_y):(0x%.2X, 0x%.2X)\r\n", joy_info.L_X, joy_info.L_Y);
+        }
+        if (joy_info.R_X != JOY_R_X_INIT || joy_info.R_Y != JOY_R_Y_INIT) // 0X80/0X7F为Byte3 Byte4初始化状态
+        {
+          printf("(R_x, R_y):(0x%.2X, 0x%.2X)\r\n", joy_info.R_X, joy_info.R_Y);
+        }
+        if (joy_info.Buttons_1 != BUTTONS1_L_INIT) // 0X08 为Byte5初始化状态
+        {
+          printf("Buttons_1: 0x%.2X\r\n", joy_info.Buttons_1);
+        }
+        if (joy_info.Buttons_2 != BUTTONS1_R_INIT) // 0X00 为Byte6初始化状态
+        {
+          printf("Buttons_2: 0x%.2X\r\n", joy_info.Buttons_2);
+        }
+        if (joy_info.ID != 0x08 || joy_info.Mode != 0x00) // 0x7C为mode亮灯；0x74为mode灭灯
+        {
+          printf("ID:0x%X, Mode:0x%X)\r\n", joy_info.ID, joy_info.Mode);
+        }
+      }
+    }
+    else
+    {
+      // printf("Failed to get joystick info!\r\n");
+    }
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */

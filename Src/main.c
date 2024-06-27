@@ -78,6 +78,16 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int _write(int fd, char *pBuffer, int size)
+{
+  for (int i = 0; i < size; i++)
+  {
+    while ((USART6->SR & 0X40) == 0)
+      ;                               // 等待上一次串口数据发送完成
+    USART6->DR = (uint8_t)pBuffer[i]; // 写DR,串口6将发送数据
+  }
+  return size;
+}
 
 /* USER CODE END 0 */
 
@@ -130,13 +140,14 @@ int main(void)
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
 
+  printf("Hello World!\r\n");
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
   MX_FREERTOS_Init();
 
   /* Start scheduler */
-  // osKernelStart();
+  osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 
