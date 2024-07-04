@@ -62,9 +62,9 @@ static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id);
 /* USER CODE END 1 */
 
 /**
- * Init USB host library, add supported class and start the library
- * @retval None
- */
+  * Init USB host library, add supported class and start the library
+  * @retval None
+  */
 void MX_USB_HOST_Init(void)
 {
   /* USER CODE BEGIN USB_HOST_Init_PreTreatment */
@@ -92,7 +92,7 @@ void MX_USB_HOST_Init(void)
 /*
  * user callback definition
  */
-static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
+static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
 {
   /* USER CODE BEGIN CALL_BACK_1 */
   switch (id)
@@ -102,14 +102,20 @@ static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 
   case HOST_USER_DISCONNECTION:
     Appli_state = APPLICATION_DISCONNECT;
+    USBH_UsrLog("USB device disconnected.");
+    // osMessagePut(phost->os_event, id, 0);
     break;
 
   case HOST_USER_CLASS_ACTIVE:
     Appli_state = APPLICATION_READY;
+    USBH_UsrLog("USB device ready.");
+    // osMessagePut(phost->os_event, id, 0);
     break;
 
   case HOST_USER_CONNECTION:
     Appli_state = APPLICATION_START;
+    USBH_UsrLog("USB device connected.");
+    // osMessagePut(phost->os_event, id, 0);
     break;
 
   default:
@@ -119,9 +125,10 @@ static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
+

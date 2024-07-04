@@ -16,6 +16,9 @@
         "usbh_conf.h": "c",
         "usbh_hid_mouse.h": "c",
         "freertos.h": "c",
-        "portable.h": "c"
+        "portable.h": "c",
+        "usbh_hid_keybd.h": "c",
+        "cstdlib": "c",
+        "usbh_hid_parser.h": "c"
     }
 }

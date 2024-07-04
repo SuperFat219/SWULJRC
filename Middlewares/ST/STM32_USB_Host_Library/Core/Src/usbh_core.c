@@ -496,10 +496,6 @@ USBH_StatusTypeDef USBH_Process(USBH_HandleTypeDef *phost)
 #endif
 #endif
     }
-    else
-    {
-      USBH_UsrLog("USB Device Unconnected");
-    }
     break;
 
   case HOST_DEV_WAIT_FOR_ATTACHMENT: /* Wait for Port Enabled */
