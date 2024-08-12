@@ -54,7 +54,8 @@ static void CANCommRxCallback(CANInstance *_instance)
         // 收完这一包以后刚好等于总buf len,说明已经收完了
         if (comm->cur_recv_len == comm->recv_buf_len)
         {
-            // 如果buff里本tail的位置等于CAN_COMM_TAIL
+            // 如果buff里本tail的位置等于CAN_C
+            OMM_TAIL
             if (comm->raw_recvbuf[comm->recv_buf_len - 1] == CAN_COMM_TAIL)
             { // 通过校验,复制数据到unpack_data中
                 if (comm->raw_recvbuf[comm->recv_buf_len - 2] == crc_8(comm->raw_recvbuf + 2, comm->recv_data_len))
